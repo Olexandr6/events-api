@@ -1,5 +1,18 @@
 services:
-  postgres:
+  events-app:
+    build:
+      context: .
+      target: development
+    command: sh -c "npx prisma migrate deploy --schema prisma/schema.prisma && npx prisma generate --schema prisma/schema.prisma && npm run start:dev"
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+    ports:
+      - '3002:3002'
+    volumes:
+      - .:/usr/src/app
+  db:
     image: postgres
     ports:
       - '5432:5432'
@@ -7,3 +20,13 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: event_management_system
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
