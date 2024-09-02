@@ -5,14 +5,14 @@ services:
       target: development
     command: sh -c "npx prisma migrate deploy --schema prisma/schema.prisma && npx prisma generate --schema prisma/schema.prisma && npm run start:dev"
     depends_on:
-      - db
+      - postgres
     env_file:
       - ./.env
     ports:
       - '3002:3002'
     volumes:
       - .:/usr/src/app
-  db:
+  postgres:
     image: postgres
     ports:
       - '5432:5432'
