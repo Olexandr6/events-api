@@ -14,16 +14,8 @@ model Event {
   description String?
   date        DateTime
   location    String
-  categoryId  Int
-  category    Category @relation(fields: [categoryId], references: [id])
+  category    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-}
-
-model Category {
-  id    Int    @id @default(autoincrement())
-  name  String
-  color String
-  events Event[]
 }
 
