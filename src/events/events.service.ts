@@ -31,6 +31,8 @@ export class EventsService {
       where: { id },
     });
 
+    console.log('event: ', event);
+
     if (!event) {
       throw new NotFoundException(`Event with id: ${id} not found`);
     }
