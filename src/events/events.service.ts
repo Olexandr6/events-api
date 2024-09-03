@@ -46,14 +46,14 @@ export class EventsService {
         ],
         NOT: { id: event.id },
       },
-      take: 5,
+      take: 3,
     });
 
     if (recommendations.length === 0) {
       recommendations = await this.prisma.event.findMany({
         where: { id: { not: event.id } },
         orderBy: { date: 'desc' },
-        take: 5,
+        take: 3,
       });
     }
 
