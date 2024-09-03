@@ -10,7 +10,9 @@ export class EventsService {
 
   async create(data: CreateEventDto): Promise<Event> {
     return this.prisma.event.create({
-      data,
+      data: {
+        ...data,
+      },
     });
   }
 

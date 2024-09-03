@@ -3,13 +3,12 @@ import {
   IsOptional,
   IsDateString,
   IsNotEmpty,
-  IsNumber,
 } from 'class-validator';
 
 export class CreateEventDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  title: string;
 
   @IsString()
   @IsOptional()
@@ -23,7 +22,7 @@ export class CreateEventDto {
   @IsNotEmpty()
   location: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  categoryId: number;
+  category: string;
 }
