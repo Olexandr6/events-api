@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Event } from '@prisma/client';
 import { CreateEventDto } from './dtos/create-event.dto';
@@ -24,6 +24,38 @@ export class EventsService {
     return this.prisma.event.findUnique({
       where: { id },
     });
+  }
+
+  async getRecommendations(id: number) {
+    const event = await this.prisma.event.findUnique({
+      where: { id },
+    });
+
+    if (!event) {
+      throw new NotFoundException(`Event with id: ${id} not found`);
+    }
+
+    let recommendations = await this.prisma.event.findMany({
+      where: {
+        OR: [
+          { category: event.category },
+          { date: event.date },
+          { location: event.location },
+        ],
+        NOT: { id: event.id },
+      },
+      take: 5,
+    });
+
+    if (recommendations.length === 0) {
+      recommendations = await this.prisma.event.findMany({
+        where: { id: { not: event.id } },
+        orderBy: { date: 'desc' },
+        take: 5,
+      });
+    }
+
+    return recommendations;
   }
 
   async update(id: number, updateEventDto: UpdateEventDto) {

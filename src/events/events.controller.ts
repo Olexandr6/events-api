@@ -30,6 +30,11 @@ export class EventsController {
     return this.eventsService.findOne(+id);
   }
 
+  @Get('/recommendations/:id')
+  getRecommendations(@Param('id') id: string) {
+    return this.eventsService.getRecommendations(+id);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
     return this.eventsService.update(+id, updateEventDto);
