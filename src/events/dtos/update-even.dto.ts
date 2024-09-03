@@ -17,6 +17,7 @@ export class UpdateEventDto {
   @IsOptional()
   location?: string;
 
+  @IsString()
   @IsOptional()
-  categoryId?: number;
+  category: string;
 }
